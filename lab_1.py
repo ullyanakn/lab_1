@@ -1,6 +1,5 @@
 import time, os
 
-
 GREEN = '\033[42m'
 YELLOW = '\033[43m'
 RED = '\033[41m'
@@ -29,32 +28,26 @@ print()
 
 BLACK = "\033[40m"
 WHITE = "\033[107m"
+CELL='  '
 
 pattern = [
-    "1110000000000000111",
-    "000110000000001100",
-    "000001000000010000",
-    "000000100000100000",
-    "000000010001000000",
-    "000000001010000000",
-    "000000000100000000",
+    "###             ###",
+    "   ##         ##   ",
+    "     #       #     ",
+    "      #     #      ",
+    "       #   #       ",
+    "        # #        ",
+    "         #         ",
 ]
 
-def draw_pattern(repeats):
-    width = len(pattern[0])
-    for row in pattern:
-        row = row.ljust(width, '0')
-        row = row * repeats
-        line = ""
-        for cell in row:
-            if cell == '1':
-                color = WHITE
-            else:
-                color = BLACK
-            line = line + color + " "
-        print(line + END)
+def draw_pattern(across, down):
+    for _ in range(down):
+        for row in pattern:
+            print(''.join(f'{BLUE}{CELL}{END}' if c == '#' else CELL for c in row * 2 * across))
 
-draw_pattern(7)
+draw_pattern(2,3)
+
+
 #3-animation
 
 input('Нажмите Enter для запуска анимации...')
@@ -67,7 +60,7 @@ for step in range(4):
     fg = colors[step]
     col = 3 + step * 3
     for r, row in enumerate(pattern):
-        line = ''.join((fg if c == '1' else BLACK) + ' ' for c in row)
+        line = ''.join((fg if c == '#' else BLACK) + ' ' for c in row)
         print(f'\033[{3 + r};{col}H{line}{END}', end='') 
     print(f'\033[12;1HКадр {step + 1} из 4', end='', flush=True)
     time.sleep(0.5)
@@ -76,6 +69,7 @@ print('\033[12;1H\033')
 
 
 #4 - diagramma
+
 f=open('seq.txt')
 numbers = [float(n) for n in f]
 
@@ -98,9 +92,12 @@ print()
 print(f'{GREEN} {END} нечётные:  {res_c1}%')
 print(f'{BLUE} {END} чётные:    {res_c2}%')
 print()
+
+f.close()
+
+
 #5 - graphik
 
-CELL = '  '
 POINT = f'{GREEN}  {END}'
 
 xs = range(-9, 10)
